@@ -1,0 +1,240 @@
+<!DOCTYPE  html> 
+<html  lang="es"> 
+<head> 
+<meta  charset="UTF-8"  /> 
+<meta  name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>¿Quieres ser mi San Valentín?</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ffe6f0, #ffe0e6);
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    position: relative;
+  }
+
+  #heart-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 24px;
+    opacity: 0.8;
+    animation: floatHeart 4s linear forwards;
+  }
+
+  @keyframes floatHeart {
+    0% {
+      transform: translateY(0) translateX(0);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-800px) translateX(50px);
+      opacity: 0;
+    }
+  }
+
+  #mensaje-inicial {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    text-align: center;
+    font-size: 2em;
+    color: #b30059;
+    font-weight: bold;
+  }
+
+  #regalo {
+    width: 150px;
+    height: 150px;
+    background-color: #f4a261;
+    border-radius: 10px;
+    margin: 100px auto 20px auto; 
+    pantalla:  flex; 
+    alinear elementos:  centrar; 
+    justificar contenido:  centrar; 
+    tamaño de fuente: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s;
+  }
+
+  #regalo.grande {
+    transform: scale(1.5);
+  }
+
+  #pregunta {
+    text-align: center;
+    font-size: 2em;
+    margin-top: 20px;
+    color: #fff;
+    text-shadow: 1px 1px 2px #000;
+  }
+
+  #botones {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+  }
+
+  button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  #si-btn {
+    background-color: #ff69b4;
+    color: #fff;
+  }
+
+  #no-btn {
+    background-color: #bbb;
+    color: #fff;
+    position: relative;
+  }
+
+  #mensaje-final {
+    text-align: center;
+    font-size: 2em;
+    color: #fff;
+    margin-top: 30px;
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="heart-container"></div>
+<div id="mensaje-inicial">¿Quieres ser mi San Valentín?</div>
+
+<div id="regalo">🎁</div>
+
+<div id="pregunta">¿Quieres hacer mi San Valentín?</div>
+<div id="botones">
+  <button id="si-btn">Sí</button>
+  <button id="no-btn">No</button>
+</div>
+
+<div id="mensaje-final"></div>
+
+<!-- Sonidos agradables -->
+<audio id="sonido-si" src="https://freesound.org/data/previews/512/512177_10226507-lq.mp3"></audio>
+<audio id="sonido-no" src="https://freesound.org/data/previews/256/256113_4486188-lq.mp3"></audio>
+<audio id="sonido-final" src="https://freesound.org/data/previews/512/512193_10226507-lq.mp3"></audio>
+
+<script>
+  const heartContainer = document.getElementById('heart-container');
+
+  // Función para crear corazones cayendo
+  const corazones = [
+    '💖','💝','💘','💗','💓','💞','💕'
+  ];
+
+  function crearCorazon() {
+    const div = document.createElement('div');
+    div.className = 'heart';
+    div.innerHTML = corazones[Math.floor(Math.random() * corazones.length)];
+    div.style.left = Math.random() * 100 + 'vw';
+    div.style.fontSize = (20 + Math.random() * 20) + 'px';
+    div.style.top = '100%';
+    div.style.animationDuration = (3 + Math.random() * 2) + 's';
+
+    heartContainer.appendChild(div);
+
+    setTimeout(() => {
+      div.remove();
+    }, 4000);
+  }
+
+  setInterval(crearCorazon, 300);
+
+  // Funcionalidades del regalo
+  const regalo = document.getElementById('regalo');
+
+  regalo.addEventListener('click', () => {
+    regalo.classList.toggle('grande');
+    if (navigator.vibrate) {
+      navigator.vibrate(200);
+    }
+  });
+
+  // Variables para botones
+  const siBtn = document.getElementById('si-btn');
+  const noBtn = document.getElementById('no-btn');
+  const mensajeFinal = document.getElementById('mensaje-final');
+  const pregunta = document.getElementById('pregunta');
+
+  let tamañoNo = 100; // tamaño en porcentaje
+  let maxTamañoNo = 300; // tamaño máximo
+
+  // Sonidos
+  const sonidoSi = document.getElementById('sonido-si');
+  const sonidoNo = document.getElementById('sonido-no');
+
+  // Función para reproducir sonidos
+  function playSound(id) {
+    const sound = document.getElementById(id);
+    sound.currentTime = 0;
+    sound.play();
+  }
+
+  // Función para mover aleatoriamente el botón de "No"
+  function moverNo() {
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+    const randX = Math.random() * maxX;
+    const randY = Math.random() * maxY;
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = randX + 'px';
+    noBtn.style.top = randY + 'px';
+  }
+
+  // Evento para "Sí"
+  siBtn.addEventListener('click', () => {
+    playSound('sonido-si');
+    mensajeFinal.innerHTML = "¡Gracias! Te amo ❤️";
+    mensajeFinal.style.display = 'block';
+  });
+
+  // Evento para "No"
+  noBtn.addEventListener('mouseenter', () => {
+    moverNo();
+  });
+
+  noBtn.addEventListener('click', () => {
+    playSound('sonido-no');
+    tamañoNo += 20;
+    if (tamañoNo > maxTamañoNo) tamañoNo = maxTamañoNo;
+    noBtn.style.transform = `scale(${tamañoNo/100})`;
+  });
+
+  // También podemos hacer que si se hace clic en No, se traslade aleatoriamente
+  noBtn.addEventListener('mousedown', () => {
+    moverNo();
+  });
+
+  // Opcional: aumentar tamaño del botón "No" cada clic
+  noBtn.addEventListener('click', () => {
+    if (tamañoNo < maxTamañoNo) {
+      tamañoNo += 10;
+      noBtn.style.transform = `scale(${tamañoNo/100})`;
+    }
+  });
+
+  // Mostrar corazones en inicio
+  // Ya lo hacemos con setInterval
+
+</script>
+</body>
+  </html>
