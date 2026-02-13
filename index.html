@@ -1,240 +1,274 @@
-<!DOCTYPE  html> 
-<html  lang="es"> 
-<head> 
-<meta  charset="UTF-8"  /> 
-<meta  name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>¿Quieres ser mi San Valentín?</title>
-<style>
-  body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(135deg, #ffe6f0, #ffe0e6);
-    font-family: 'Arial', sans-serif;
-    overflow: hidden;
-    position: relative;
-  }
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>¿Quieres ser mi San  Valentín?</title> 
+<estilo>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ffe6f0, #ffe0e6);
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  user-select: none;
+  position: relative;
+}
 
-  #heart-container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    overflow: hidden;
-  }
+/* Corazones que caen */
+.heart {
+  position: absolute;
+  font-size: 20px;
+  animation: fall 4s linear forwards;
+  pointer-events: none;
+}
+@keyframes fall {
+  from { transform: translateY(-10vh); opacity: 1; }
+  to { transform: translateY(110vh); opacity: 0; }
+}
 
-  .heart {
-    position: absolute;
-    font-size: 24px;
-    opacity: 0.8;
-    animation: floatHeart 4s linear forwards;
-  }
+/* Flores decorativas */
+.flower {
+  position: absolute;
+  font-size: 25px;
+  opacity: 0.7;
+}
 
-  @keyframes floatHeart {
-    0% {
-      transform: translateY(0) translateX(0);
-      opacity: 0.8;
-    }
-    100% {
-      transform: translateY(-800px) translateX(50px);
-      opacity: 0;
-    }
-  }
+/* Regalo */
+.gift {
+  font-size: 120px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: inline-block;
+  user-select: none;
+}
 
-  #mensaje-inicial {
-    position: absolute;
-    top: 50px;
-    width: 100%;
-    text-align: center;
-    font-size: 2em;
-    color: #b30059;
-    font-weight: bold;
-  }
+/* Contenedor de botones y pregunta */
+#questionContainer {
+  position: absolute;
+  top: 20%;
+  width: 100%;
+  text-align: center;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 20px;
+}
 
-  #regalo {
-    width: 150px;
-    height: 150px;
-    background-color: #f4a261;
-    border-radius: 10px;
-    margin: 100px auto 20px auto; 
-    pantalla:  flex; 
-    alinear elementos:  centrar; 
-    justificar contenido:  centrar; 
-    tamaño de fuente: 1.2em;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    transition: transform 0.3s;
-  }
+/* Pregunta */
+#question {
+  font-size: 2em;
+  color: #b30059;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #fff;
+}
 
-  #regalo.grande {
-    transform: scale(1.5);
-  }
+/* Botones */
+#buttons {
+  display: flex;
+  gap: 20px;
+}
 
-  #pregunta {
-    text-align: center;
-    font-size: 2em;
-    margin-top: 20px;
-    color: #fff;
-    text-shadow: 1px 1px 2px #000;
-  }
+button {
+  padding: 15px 30px;
+  font-size: 1.2em;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+#siBtn {
+  background-color: #ff69b4;
+  color: #fff;
+}
+#noBtn {
+  background-color: #444;
+  color: #fff;
+  position: relative;
+}
 
-  #botones {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 20px;
-  }
-
-  button {
-    padding: 15px 30px;
-    font-size: 1.2em;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  #si-btn {
-    background-color: #ff69b4;
-    color: #fff;
-  }
-
-  #no-btn {
-    background-color: #bbb;
-    color: #fff;
-    position: relative;
-  }
-
-  #mensaje-final {
-    text-align: center;
-    font-size: 2em;
-    color: #fff;
-    margin-top: 30px;
-    display: none;
-  }
+#finalMessage {
+  position: absolute;
+  top: 60%;
+  width: 100%;
+  text-align: center;
+  font-size: 2em;
+  color: #d6336c;
+  display: none;
+}
 </style>
 </head>
 <body>
 
-<div id="heart-container"></div>
-<div id="mensaje-inicial">¿Quieres ser mi San Valentín?</div>
+<div class="gift" id="regalo">🎁</div>
 
-<div id="regalo">🎁</div>
-
-<div id="pregunta">¿Quieres hacer mi San Valentín?</div>
-<div id="botones">
-  <button id="si-btn">Sí</button>
-  <button id="no-btn">No</button>
+<div id="questionContainer">
+  <div id="question">¿Quieres hacer mi San Valentín?</div>
+  <div id="buttons">
+    <button id="siBtn">Sí 💖</button>
+    <button id="noBtn">No 🙄</button>
+  </div>
 </div>
 
-<div id="mensaje-final"></div>
+<div id="finalMessage"></div>
 
-<!-- Sonidos agradables -->
-<audio id="sonido-si" src="https://freesound.org/data/previews/512/512177_10226507-lq.mp3"></audio>
-<audio id="sonido-no" src="https://freesound.org/data/previews/256/256113_4486188-lq.mp3"></audio>
-<audio id="sonido-final" src="https://freesound.org/data/previews/512/512193_10226507-lq.mp3"></audio>
+<!-- Sonidos -->
+<audio id="sonidoSi" src="https://freesound.org/data/previews/512/512177_10226507-lq.mp3"></audio>
+<audio id="sonidoNo" src="https://freesound.org/data/previews/256/256113_4486188-lq.mp3"></audio>
+<audio id="sonidoFinal" src="https://freesound.org/data/previews/512/512193_10226507-lq.mp3"></audio>
 
 <script>
-  const heartContainer = document.getElementById('heart-container');
+const regalo = document.getElementById('regalo');
+const questionContainer = document.getElementById('questionContainer');
+const siBtn = document.getElementById('siBtn');
+const noBtn = document.getElementById('noBtn');
+const finalMessage = document.getElementById('finalMessage');
 
-  // Función para crear corazones cayendo
-  const corazones = [
-    '💖','💝','💘','💗','💓','💞','💕'
-  ];
+const sonidoSi = document.getElementById('sonidoSi');
+const sonidoNo = document.getElementById('sonidoNo');
+const sonidoFinal = document.getElementById('sonidoFinal');
 
-  function crearCorazon() {
-    const div = document.createElement('div');
-    div.className = 'heart';
-    div.innerHTML = corazones[Math.floor(Math.random() * corazones.length)];
-    div.style.left = Math.random() * 100 + 'vw';
-    div.style.fontSize = (20 + Math.random() * 20) + 'px';
-    div.style.top = '100%';
-    div.style.animationDuration = (3 + Math.random() * 2) + 's';
+let tamañoRegalo = 120; // tamaño en px
+let maxTamañoRegalo = 300; // tamaño máximo
 
-    heartContainer.appendChild(div);
+let tocadoContador = 0; // cuántas veces se tocó el regalo
 
-    setTimeout(() => {
-      div.remove();
-    }, 4000);
+// Función para crear corazones que caen
+const corazones = ['💖','💝','💘','💗','💓','💞','💕'];
+function crearCorazon() {
+  const div = document.createElement('div');
+  div.className = 'heart';
+  div.innerHTML = corazones[Math.floor(Math.random() * corazones.length)];
+  div.style.left = Math.random() * 100 + 'vw';
+  div.style.fontSize = (20 + Math.random() * 20) + 'px';
+  div.style.top = '-10vh';
+  div.style.animationDuration = (3 + Math.random() * 2) + 's';
+  document.body.appendChild(div);
+  setTimeout(() => div.remove(), 4000);
+}
+setInterval(crearCorazon, 300);
+
+// Flores decorativas
+for (let i=0; i<6; i++) {
+  const f = document.createElement('div');
+  f.className = 'flower';
+  f.innerHTML = '🌸';
+  f.style.top = Math.random() * 90 + 'vh';
+  f.style.left = Math.random() * 90 + 'vw';
+  document.body.appendChild(f);
+}
+
+// Función para agrandar el regalo
+function agrandarRegalo() {
+  tamañoRegalo += 20;
+  if (tamañoRegalo > maxTamañoRegalo) tamañoRegalo = maxTamañoRegalo;
+  regalo.style.fontSize = tamañoRegalo + 'px';
+}
+
+// Evento para tocar el regalo
+regalo.addEventListener('click', () => {
+  agrandarRegalo();
+  tocadoContador++;
+  // Vibrar si es posible
+  if (navigator.vibrate) {
+    navigator.vibrate(100);
   }
-
-  setInterval(crearCorazon, 300);
-
-  // Funcionalidades del regalo
-  const regalo = document.getElementById('regalo');
-
-  regalo.addEventListener('click', () => {
-    regalo.classList.toggle('grande');
-    if (navigator.vibrate) {
-      navigator.vibrate(200);
-    }
-  });
-
-  // Variables para botones
-  const siBtn = document.getElementById('si-btn');
-  const noBtn = document.getElementById('no-btn');
-  const mensajeFinal = document.getElementById('mensaje-final');
-  const pregunta = document.getElementById('pregunta');
-
-  let tamañoNo = 100; // tamaño en porcentaje
-  let maxTamañoNo = 300; // tamaño máximo
-
-  // Sonidos
-  const sonidoSi = document.getElementById('sonido-si');
-  const sonidoNo = document.getElementById('sonido-no');
-
-  // Función para reproducir sonidos
-  function playSound(id) {
-    const sound = document.getElementById(id);
-    sound.currentTime = 0;
-    sound.play();
+  // Cuando alcance cierto tamaño, mostrar la pregunta
+  if (tamañoRegalo >= maxTamañoRegalo) {
+    // Mostrar pregunta
+    document.getElementById('questionContainer').style.display = 'flex';
   }
+});
 
-  // Función para mover aleatoriamente el botón de "No"
-  function moverNo() {
-    const maxX = window.innerWidth - noBtn.offsetWidth;
-    const maxY = window.innerHeight - noBtn.offsetHeight;
-    const randX = Math.random() * maxX;
-    const randY = Math.random() * maxY;
-    noBtn.style.position = 'absolute';
-    noBtn.style.left = randX + 'px';
-    noBtn.style.top = randY + 'px';
-  }
+// Función para mover botón "No" aleatoriamente
+function moverNo() {
+  const maxX = window.innerWidth - noBtn.offsetWidth;
+  const maxY = window.innerHeight - noBtn.offsetHeight;
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = Math.random() * maxX + 'px';
+  noBtn.style.top = Math.random() * maxY + 'px';
+}
 
-  // Evento para "Sí"
-  siBtn.addEventListener('click', () => {
-    playSound('sonido-si');
-    mensajeFinal.innerHTML = "¡Gracias! Te amo ❤️";
-    mensajeFinal.style.display = 'block';
-  });
+// Evento para "No"
+noBtn.addEventListener('mouseenter', () => {
+  moverNo();
+});
+noBtn.addEventListener('click', () => {
+  // Reproducir sonido
+  sonidoNo.currentTime = 0;
+  sonidoNo.play();
+  // Aumentar tamaño y mover
+  let scale = parseFloat(noBtn.dataset.scale) || 1;
+  scale += 0.2;
+  if (scale > 3) scale = 3; // límite
+  noBtn.dataset.scale = scale;
+  noBtn.style.transform = `scale(${scale})`;
+  moverNo();
+});
 
-  // Evento para "No"
-  noBtn.addEventListener('mouseenter', () => {
-    moverNo();
-  });
+// Evento para "Sí"
+siBtn.addEventListener('click', () => {
+  // Reproducir sonido
+  sonidoSi.currentTime = 0;
+  sonidoSi.play();
+  // Mostrar mensaje final
+  finalMessage.innerHTML = "¡Sabía que ibas a decir que sí! 😊<br>¡Te amo!";
+  finalMessage.style.display = 'block';
+  // Ocultar pregunta
+  document.getElementById('questionContainer').style.display = 'none';
+});
 
-  noBtn.addEventListener('click', () => {
-    playSound('sonido-no');
-    tamañoNo += 20;
-    if (tamañoNo > maxTamañoNo) tamañoNo = maxTamañoNo;
-    noBtn.style.transform = `scale(${tamañoNo/100})`;
-  });
+// Función final
+function mostrarFinal() {
+  sonidoFinal.currentTime = 0;
+  sonidoFinal.play();
+  finalMessage.innerHTML = "¡Gracias por hacerme feliz! 🥰<br>Te amo muchísimo.";
+  finalMessage.style.display = 'block';
+}
 
-  // También podemos hacer que si se hace clic en No, se traslade aleatoriamente
-  noBtn.addEventListener('mousedown', () => {
-    moverNo();
-  });
-
-  // Opcional: aumentar tamaño del botón "No" cada clic
-  noBtn.addEventListener('click', () => {
-    if (tamañoNo < maxTamañoNo) {
-      tamañoNo += 10;
-      noBtn.style.transform = `scale(${tamañoNo/100})`;
-    }
-  });
-
-  // Mostrar corazones en inicio
-  // Ya lo hacemos con setInterval
+// Cuando se abre totalmente, mostrar mensaje final
+// Esto puede ajustarse según preferencia
 
 </script>
+
 </body>
-  </html>
+</html>
+}
+
+
+}
+
+}
+
+
+}
+
+
+}
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
